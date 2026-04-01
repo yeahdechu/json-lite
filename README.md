@@ -27,6 +27,7 @@ Features
  - Do not round large numbers
  - "Save as..." saves the original JSON document
  - Select and copy a working JSON from the formatted JSON
+ - shortcut「alt + shift + f」to format selected text
 
 
 Notes
