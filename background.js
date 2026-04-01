@@ -118,6 +118,10 @@ function readConf() {
 			'.gb', '{font: 20px/20px serif;cursor:pointer;padding:0 2px}' +
 			'.gb', ':hover{background:#ccc}' +
 			'.gb', ':active{background:#999}' +
+			'.gc', '{font:11px/20px sans-serif;cursor:pointer;padding:0 6px;border-left:1px solid ' + opts.info + '}' +
+			'.gc', ':hover{background:#ccc}' +
+			'.gc', ':active{background:#999}' +
+			'.gc.gd', '{cursor:default;opacity:.4}' +
 			'.e', ',.b', '{font-weight:bold}' +
 			'div.e', '{white-space:normal;font-size:120%;margin:0 0 1em}'
 		].join(rand)
@@ -387,9 +391,11 @@ function func(rand, opts, op, msg) {
 			link.target = "_blank"
 		}
 
-		if (first === 0) {
+		if (box) {
 			var btnGroup = el("div", node, "g")
+			, copyBtn = el("div", btnGroup, "gc")
 			, closeBtn = el("div", btnGroup, "gb")
+			copyBtn.textContent = "Copy"
 			closeBtn.textContent = "⨯"
 		}
 
@@ -430,6 +436,32 @@ function func(rand, opts, op, msg) {
 				}
 			} else if (target === closeBtn) {
 				to.textContent = oldTxt
+			} else if (target === copyBtn && !target.classList.contains("gd" + rand)) {
+				var tmp = box.cloneNode(true)
+				, bg = tmp.querySelector(".g" + rand)
+				if (bg) bg.parentNode.removeChild(bg)
+				var jsonText = tmp.textContent
+				, done = function() {
+					target.textContent = "Copied"
+					target.classList.add("gd" + rand)
+				}
+				if (navigator.clipboard && navigator.clipboard.writeText) {
+					navigator.clipboard.writeText(jsonText).then(done, function() {
+						textarea.value = jsonText
+						document.body.appendChild(textarea)
+						textarea.select()
+						document.execCommand("copy")
+						document.body.removeChild(textarea)
+						done()
+					})
+				} else {
+					textarea.value = jsonText
+					document.body.appendChild(textarea)
+					textarea.select()
+					document.execCommand("copy")
+					document.body.removeChild(textarea)
+					done()
+				}
 			}
 		}
 
