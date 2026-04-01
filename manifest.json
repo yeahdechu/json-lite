@@ -41,6 +41,14 @@
       "run_at": "document_end"
     }
   ],
+  "commands": {
+    "format-selection": {
+      "suggested_key": {
+        "default": "Alt+Shift+F"
+      },
+      "description": "Format selected text"
+    }
+  },
   "action": {
     "default_icon": {
       "48": "img/icon-48.png"

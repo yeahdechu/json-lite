@@ -51,6 +51,13 @@ if (!editor) {
 	chrome.contextMenus.onClicked.addListener(function(info, tab) {
 		onMsg({op: info.menuItemId}, {tab:tab, frameId: info.frameId})
 	})
+	chrome.commands.onCommand.addListener(function(command) {
+		if (command === "format-selection") {
+			chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+				if (tabs[0]) onMsg({op: "formatSelection"}, {tab: tabs[0]})
+			})
+		}
+	})
 }
 readConf()
 
